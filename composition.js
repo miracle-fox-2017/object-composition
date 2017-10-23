@@ -61,28 +61,25 @@ class OtherCookie extends Cookie{
 
 class CookieFactory {
   static create(options) {
-    // options.join('')
-    // options.split('\n')
-    let temparr = []
     let arr = []
-    let tempingrediens = []
+    let arrIngrediens = []
     for (let i =0;i<options.length-1;i++){
         let temp = options[i].split(' = ')
-        temparr.push(temp)
-        if (temparr[i][0] == 'peanut butter' ){
+        arrIngrediens.push(temp)
+        if (arrIngrediens[i][0] == 'peanut butter' ){
 
-            let peanutbutter = new PeanutButter(temparr[i][0], this.pecahIngredients(temparr[i][1] = temparr[i][1].split(',')))
+            let peanutbutter = new PeanutButter(arrIngrediens[i][0], this.pecahIngredients(arrIngrediens[i][1] = arrIngrediens[i][1].split(',')))
             console.log(peanutbutter);
             arr.push(peanutbutter)
         }
-        else if (temparr[i][0] === 'chocolate chip') {
+        else if (arrIngrediens[i][0] === 'chocolate chip') {
 
-            let chocho = new ChocholateChip(temparr[i][0],this.pecahIngredients(temparr[i][1] = temparr[i][1].split(',')))
+            let chocho = new ChocholateChip(arrIngrediens[i][0],this.pecahIngredients(arrIngrediens[i][1] = arrIngrediens[i][1].split(',')))
             arr.push(chocho)
         }
         else {
 
-          let other = new OtherCookie(temparr[i][0],this.pecahIngredients(temparr[i][1] = temparr[i][1].split(',')))
+          let other = new OtherCookie(arrIngrediens[i][0],this.pecahIngredients(arrIngrediens[i][1] = arrIngrediens[i][1].split(',')))
           arr.push(other)
         }
     }
@@ -96,9 +93,9 @@ class CookieFactory {
     let arr = []
     for (let i= 0; i<ingredients.length;i++){
       let obj = {}
-      let temp = ingredients[i].split(' : ')
-      obj.name = temp[1]
-      obj.amount = temp[0]
+      let tempPecahArr = ingredients[i].split(' : ')
+      obj.name = tempPecahArr[1]
+      obj.amount = tempPecahArr[0]
       arr.push(obj)
       debugger
       // let amount = ingredients[i][0]
@@ -167,7 +164,7 @@ let options = fs.readFileSync('cookies.txt','utf-8').split('\n')
 let batch_of_cookies = CookieFactory.create(options)
 console.log(batch_of_cookies)
 
-let sugarFreeFoods = CookieFactory.cookieRecommendation('sunday',batch_of_cookies)
+let sugarFreeFoods = CookieFactory.cookieRecommendation('tuesday',batch_of_cookies)
 console.log('Sugar free cakes are :');
 for (let i = 0; i < sugarFreeFoods.length; i++) {
   console.log(sugarFreeFoods[i].name)
