@@ -52,8 +52,7 @@ class CookieFactory {
 
 	static create(options) {
 		let arrCookieFactory = [];
-		let cookieData = fs.readFileSync('cookies.txt');
-		let arrCookies = cookieData.toString().split('\n');
+		
 
 		for (var i = 0; i < arrCookies.length; i++) {
 			let cookieName = arrCookies[i].split('=');
@@ -133,8 +132,11 @@ class CookieFactory {
 	}
 }
 
-let allCookies = [];
-let batch_of_cookies = CookieFactory.create(allCookies);
+let cookieData = fs.readFileSync('cookies.txt');
+let arrCookies = cookieData.toString().split('\n');
+let batch_of_cookies = CookieFactory.create(arrCookies);
+// console.log(batch_of_cookies);
+
 let sugarFreeFoods = CookieFactory.cookieRecommendation("tuesday", batch_of_cookies);
 
 for (var s = 0; s < sugarFreeFoods.length; s++) {
