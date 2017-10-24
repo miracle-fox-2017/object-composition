@@ -47,56 +47,31 @@ class OtherCookie extends Cookie {
 
 class CookieFactory {
 	constructor() {
-
+		this.producedCookies = [];
 	}
 
 	static create(options) {
 		let arrCookieFactory = [];
-		let cookieData = fs.readFileSync('cookies.txt');
+		let cookieData = fs.readFileSync('cookie.txt');
 		let arrCookies = cookieData.toString().split('\n');
 
-		// console.log(arrCookies);
-
 		for (var i = 0; i < arrCookies.length; i++) {
-			let cookieName = arrCookies[i].split(' ');
+			let cookieName = arrCookies[i].split('=');
+			let ingredientsList = cookieName[1].split(',');
 
-			if (cookieName[0] === 'peanut' && cookieName[1] === 'butter') {
-				let optPeanutCookie = [];
-				optPeanutCookie.push(new Ingredient({ name: 'flour', amount: '1 cup', has_sugar: false }));
-				optPeanutCookie.push(new Ingredient({ name: 'sugar', amount: '2 cups (gluten)', has_sugar: true }));
-				optPeanutCookie.push(new Ingredient({ name: 'peanut butter', amount: '2 cups', has_sugar: false }));
-				optPeanutCookie.push(new Ingredient({ name: 'butter', amount: '2 tsp', has_sugar: false }));
-
-				arrCookieFactory.push(new PeanutButter(arrCookies[i], optPeanutCookie));
-			} else if (cookieName[0] === 'chocolate' && cookieName[1] === 'chip') {
-				let optChocolateCookie = [];
-				optChocolateCookie.push(new Ingredient({ name: 'chip', amount: '1 cup', has_sugar: false }));
-				optChocolateCookie.push(new Ingredient({ name: 'sugar', amount: '1 cups', has_sugar: true }));
-				optChocolateCookie.push(new Ingredient({ name: 'butter', amount: '2 tsp', has_sugar: false }));
-
-				arrCookieFactory.push(new ChocolateChip(arrCookies[i], optChocolateCookie));
+			if (cookieName[0] === 'peanut butter') {
+				arrCookieFactory.push(new PeanutButter(cookieName[0], CookieFactory.getIngredientList(ingredientsList)));
+			} else if (cookieName[0] === 'chocolate chip') {
+				arrCookieFactory.push(new ChocolateChip(cookieName[0], CookieFactory.getIngredientList(ingredientsList)));
 			} else {
 				let optOtherCookie = [];
-				optOtherCookie.push(new Ingredient({ name: 'flour', amount: '1 cup', has_sugar: false }));
-				optOtherCookie.push(new Ingredient({ name: 'sugar', amount: '1 cups', has_sugar: true }));
-				optOtherCookie.push(new Ingredient({ name: 'cinnamon', amount: '2 tsp', has_sugar: false }));
-
-				arrCookieFactory.push(new OtherCookie(arrCookies[i], optOtherCookie));
+				arrCookieFactory.push(new OtherCookie(cookieName[0], CookieFactory.getIngredientList(ingredientsList)));
 			}
 		}
 
+		this.producedCookies = arrCookieFactory;
 
-		// console.log(arrCookieFactory);
-		let strCokieTxt = "";
-
-		// for (var j = 0; j < 3; j++) {
-		// 	strCokieTxt +=  arrCookieFactory[j].name+" = "+CookieFactory.ingredientToString(arrCookieFactory[j].ingredients)+"\n";		
-		// }
-
-		// console.log(strCokieTxt);
-		// fs.writeFileSync('cookie.txt', strCokieTxt, 'utf-8');
-
-		return strCokieTxt;
+		return arrCookieFactory;
 	}
 
 	static ingredientToString(ingredients) {
@@ -108,8 +83,60 @@ class CookieFactory {
 
 		return strIngredients;
 	}
+
+	static getIngredientList(arrIngredient) {
+		let arrObjIngredients = [];
+
+		for (var i = 0; i < arrIngredient.length; i++) {
+			let ingredientItem = arrIngredient[i].split(':');
+			let ingredientAmount = ingredientItem[0];
+			let ingredientName = ingredientItem[1];
+			let hasSugar = ingredientName.replace(/ /g,'') === 'sugar';
+			let objParam = {};
+			objParam.name = ingredientName;
+			objParam.amount = ingredientAmount;
+			objParam.has_sugar = hasSugar;
+
+
+			arrObjIngredients.push(new Ingredient(objParam))
+		}		
+
+		return arrObjIngredients;				  
+	}
+
+	static cookieRecommendation(day, batchCookie = this.producedCookies) {
+		let cookieResult = [];
+
+		for (var i = 0; i < batchCookie.length; i++) {	
+			if (day === "tuesday") {
+				if (CookieFactory.hasSugar(batchCookie[i].ingredients) === false) {
+					cookieResult.push(batchCookie[i]);
+				}
+			} else {
+				cookieResult.push(batchCookie[i]);
+			}
+		}
+
+		return cookieResult;
+	}
+
+	static hasSugar(ingredients) {
+		let hasSugar = false;
+
+		for (var i = 0; i < ingredients.length; i++) {
+			if (ingredients[i].has_sugar === true) {
+				hasSugar = true;
+			}
+		}
+
+		return hasSugar;
+	}
 }
 
 let allCookies = [];
 let batch_of_cookies = CookieFactory.create(allCookies);
-console.log(batch_of_cookies);
+let sugarFreeFoods = CookieFactory.cookieRecommendation("tuesday", batch_of_cookies);
+
+for (var s = 0; s < sugarFreeFoods.length; s++) {
+	console.log(sugarFreeFoods[s].name)
+}
