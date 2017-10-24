@@ -107,6 +107,7 @@ class CookieFactory {
 
   static cookieRecommendation(day, listCookie){
     let result = []
+    if(day === 'tuesday'){
       listCookie.forEach(getCookies =>{
         let sugar = false;
         getCookies.ingredients.forEach(getIngredient =>{
@@ -118,6 +119,9 @@ class CookieFactory {
           result.push(getCookies)
         }
       })
+    } else {
+      console.log('You can eat anything !!!');
+    }
     return result
   }
 }
@@ -125,7 +129,7 @@ class CookieFactory {
 let bath_of_cookies = CookieFactory.create('cookies0.txt')
 console.log(bath_of_cookies);
 
-let sugarFreeFoods = CookieFactory.cookieRecommendation("tesday", bath_of_cookies);
+let sugarFreeFoods = CookieFactory.cookieRecommendation("tuesday", bath_of_cookies);
 console.log("sugar free cakes are :");
 sugarFreeFoods.forEach( listCookie =>{
   console.log(listCookie.name);
