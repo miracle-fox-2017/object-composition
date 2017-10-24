@@ -1,3 +1,0 @@
-peanut butter = flour : 1 cup sugar : 2 cups (gluten) peanut butter : 2 cups butter : 2 tsp 
-chocolate chip = chip : 1 cup sugar : 1 cups butter : 2 tsp 
-chocolate cheese = flour : 1 cup sugar : 1 cups cinnamon : 2 tsp 

@@ -52,7 +52,7 @@ class CookieFactory {
 
 	static create(options) {
 		let arrCookieFactory = [];
-		let cookieData = fs.readFileSync('cookie.txt');
+		let cookieData = fs.readFileSync('cookies.txt');
 		let arrCookies = cookieData.toString().split('\n');
 
 		for (var i = 0; i < arrCookies.length; i++) {
