@@ -2,6 +2,8 @@
 
 //your code here
 const fs = require('fs')
+const util = require('util')
+
 let options = fs.readFileSync('cookies.txt', 'utf8').split('\n')
 // console.log(options)
 
@@ -45,14 +47,14 @@ class CookieFactory {
     let arrCookies = []
     for(let i = 0; i < options.length; i++) {
       let arrOptions = options[i].split(' = ')
+      // console.log(arrOptions[0])
       if(arrOptions[0] == 'peanut butter') {
         arrCookies.push(new PeanutButter(arrOptions[0], ingredients[i]))
-      } else if(options[i] == 'chocolate chip') {
+      } else if(arrOptions[0] == 'chocolate chip') {
         arrCookies.push(new ChocolateChip(arrOptions[0], ingredients[i]))
       } else {
         arrCookies.push(new OtherCookie(arrOptions[0], ingredients[i]))
       }
-      // console.log(this.ingredientsData(arrOptions[1]))
     }
     return arrCookies
   }
@@ -71,8 +73,6 @@ class CookieFactory {
       let split2 = splitSamaDengan[i].split(', ')
       splitKoma.push(split2)
     }
-
-    // console.log(splitKoma);
 
     // split (:)
     let ingredients = []
@@ -102,6 +102,29 @@ class CookieFactory {
     }
     return ingredients
   }
+
+  static cookieRecommendation(hari, batch_of_cookies) {
+    let cookies = batch_of_cookies
+    let freeSugar = []
+
+    for(let i = 0; i < cookies.length; i++) {
+      let checkSUgar = 0
+      for(let j = 0; j < cookies[i].ingredients.length; j++) {
+        // console.log('-- > masuk for');
+        // console.log(cookies[i].ingredients[j].has_sugar)
+        if(cookies[i].ingredients[j].has_sugar == true) {
+          // console.log('--> masuk if');
+          checkSUgar++
+        }
+      }
+      // console.log(cookies[i].ingredients[i])
+      // console.log(checkSUgar);
+      if(checkSUgar == 0) {
+        freeSugar.push(cookies[i])
+      }
+    }
+    return freeSugar
+  }
 }
 
 class Ingredient {
@@ -112,14 +135,17 @@ class Ingredient {
   }
 }
 
-// let batch_of_cookies = CookieFactory.create(options)
-// console.log(batch_of_cookies);
+let batch_of_cookies = CookieFactory.create(options)
+// console.log(util.inspect(batch_of_cookies, false, null));
+// CookieFactory.cookieRecommendation(options);
+// console.log(util.inspect(batch_of_cookies[1].ingredients[0].has_sugar, false, null));
 
-// let sugarFreeFoods = CookieFactory.cookieRecommendation('tuesday', batch_of_cookies)
-// console.log('sugar free cakes are :')
-// for(let i = 0; i < sugarFreeFoods.length; i++) {
-//   console.log(sugarFreeFoods[i].name);
-// }
+let sugarFreeFoods = CookieFactory.cookieRecommendation('tuesday', batch_of_cookies)
+// console.log(sugarFreeFoods)
+console.log('sugar free cakes are :')
+for(let i = 0; i < sugarFreeFoods.length; i++) {
+  console.log(sugarFreeFoods[i].name);
+}
 
-console.log(CookieFactory.create(options));
+// console.log(util.inspect(CookieFactory.create(options), false, null));
 // console.log(CookieFactory.ingredientsData(options))
