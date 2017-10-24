@@ -195,9 +195,11 @@ class CookieFactory{
   static cookieRecomendation(days, object){
     let recomendation = []
 
-    for(let i=0; i<object.length; i++){
-      if(object[i].ingredients[0].has_sugar === false){
-        recomendation.push(object[i])
+    if(days === 'tuesday'){
+      for(let i=0; i<object.length; i++){
+        if(object[i].ingredients[0].has_sugar === false){
+          recomendation.push(object[i])
+        }
       }
     }
     return recomendation
