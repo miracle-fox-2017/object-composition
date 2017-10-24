@@ -114,7 +114,7 @@ class CookieFactory {
     let arr = []
 
     batch_of_cookies.forEach(item => {
-      if(item.has_sugar == true){
+      if(item.has_sugar == false){
         arr.push(item.name)
       }
     })
