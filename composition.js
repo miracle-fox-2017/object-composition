@@ -3,6 +3,14 @@
 
 let fs = require('fs');
 
+class Ingridients {
+  constructor(options) {
+    this.name = options['name'];
+    this.amount = options['amount'];
+    this.has_sugar = options['has_sugar'];
+  }
+}
+
 class Cookie {
   constructor(name) {
     this.status = "mentah";
@@ -37,18 +45,8 @@ class OtherCookie extends Cookie{
   }
 }
 
-class Ingridients {
-  constructor() {
-
-  }
-}
-
 class CookieFactory {
   static create(options){
-    let peanutButter = new PeanutButter;
-    let chocholateChip = new ChocholateChip;
-    let otherCookie = new OtherCookie;
-
     let newArr = []
 
     let i = 0
